@@ -1,10 +1,17 @@
-import requests, json, time
+import requests, json, time, csv
 
 url = "https://www.instagram.com/graphql/query"
 
 end_cursor = ''
 shortcode = input('Please enter shortcode: ')
 count = 0
+counter_file = 1
+jml_per_file = 1000
+
+# csv start here
+writer = csv.writer(open('result_like/{}_{}.csv'.format(shortcode, counter_file), 'w', newline=''))
+header = ['Username', 'Fullname', 'Profile']
+writer.writerow(header)
 
 while 1:
     variables = {
@@ -30,13 +37,19 @@ while 1:
         # continue akan mengembalikan posisi eksekusi script ke variables
 
     for user in users:
+        if count % jml_per_file == 0 and count != 0:
+            counter_file += 1
+            writer = csv.writer(open('result_like/{}_{}.csv'.format(shortcode, counter_file), 'w', newline=''))
+            writer.writerow(header)
 
         username = user['node']['username']
         fullname = user['node']['full_name']
         profile = user['node']['profile_pic_url']
         count += 1
         print(count, username, fullname, profile)
-
+        writer = csv.writer(open('result_like/{}_{}.csv'.format(shortcode, counter_file), 'a', newline='', encoding='utf-8'))
+        data = [username, fullname, profile]
+        writer.writerow(data)
 
     # "after":"QVFBanhPcUZtY0hhQTFIWko5OURuVkd5N0c5NDZuRlR3cjNEOHZvWVdxbS0zMHNXZTVSaVQxdEFIOFNzV2xSRDFXNUNiUHhWV1ZFNTBtZlBPRmg1ZkhYOA=="
     end_cursor  = response['data']['shortcode_media']['edge_liked_by']['page_info']['end_cursor']
