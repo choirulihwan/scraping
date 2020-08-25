@@ -1,5 +1,6 @@
 .idea/
 instagram/result_like/*.csv
+instagram/result_comment/*.csv
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
