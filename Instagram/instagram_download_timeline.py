@@ -1,16 +1,20 @@
 # instagram download media berdasar profile
-# input adalah id yg didapatkan setelah diakses
 
 import os
 import requests, json, time
 
-url1 = 'https://www.instagram.com/graphql/query/'
-
 profile = input('Please enter profile: ')
+
+# get user id
+url = 'https://www.instagram.com/{}/?__a=1'.format(profile)
+data_response = requests.get(url).json()
+userid = data_response['graphql']['user']['id']
+
+# scraping start here
+url1 = 'https://www.instagram.com/graphql/query/'
 count = 0
 end_cursor = ''
 query_hash = 'bfa387b2992c3a52dcbe447467b4b771'
-
 # create folder
 try:
     os.makedirs('media_timeline/{}'.format(profile))
@@ -19,7 +23,7 @@ except OSError as e:
 
 while True:
     variables = {
-        "id": profile,
+        "id": userid,
         "first": 50,
         'after': end_cursor
     }
