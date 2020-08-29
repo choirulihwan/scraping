@@ -2,6 +2,7 @@
 instagram/result_like/*.csv
 instagram/result_comment/*.csv
 instagram/media_download/
+instagram/media_timeline/
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
