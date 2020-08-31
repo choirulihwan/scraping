@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-4">
+            <form method="post" action="/">
+            <div class="input-group mb-3">
+                  <select class="custom-select" name="curr">
+                    {% for currency in currencies: %}
+                      <option value="{{ currency }}" {% if currency == selected %} selected {% endif %}>{{ currency|upper }}</option>
+                    {% endfor %}
+                  </select>
+                  <div class="input-group-prepend">
+                        <button class="btn btn-primary" type="submit">Search</button>
+                  </div>
+            </div>
+            </form>
+        </div>
+    </div>
+
+   <table class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Code</th>
+          <th scope="col">Name</th>
+          <th scope="col">Rate</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for data in datas %}
+        <tr>
+          <th scope="row">{{ loop.index }}</th>
+          <td>{{ data['code'] }}</td>
+          <td>{{ data['name'] }}</td>
+          <td>{{ data['inverseRate']|number_format }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+{% endblock %}
